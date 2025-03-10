@@ -15,6 +15,10 @@ const nextConfig = {
     }
     return config;
   },
+  experimental: {
+    serverActions: true,
+  },
+  transpilePackages: ['firebase']
 };
 
 module.exports = nextConfig; 
