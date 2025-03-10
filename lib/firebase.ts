@@ -1,7 +1,11 @@
+/// <reference types="firebase/app" />
+/// <reference types="firebase/firestore" />
+/// <reference types="firebase/analytics" />
+
 'use client';
 
-import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
+import { getFirestore, Firestore } from 'firebase/firestore';
 import { Analytics, getAnalytics } from 'firebase/analytics';
 
 // TODO: Replace with your Firebase configuration
@@ -16,8 +20,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase only if it hasn't been initialized
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const db = getFirestore(app);
+const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const db: Firestore = getFirestore(app);
 
 let analytics: Analytics | null = null;
 if (typeof window !== 'undefined') {
