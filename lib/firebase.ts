@@ -1,4 +1,6 @@
-import { initializeApp } from 'firebase/app';
+'use client';
+
+import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -13,13 +15,15 @@ const firebaseConfig = {
   measurementId: "G-YPW7NK1E81"
 };
 
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only if it hasn't been initialized already
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-// Analytics can only be initialized in the browser
-let analytics;
+// Initialize analytics only in the browser
+let analytics = null;
 if (typeof window !== 'undefined') {
   analytics = getAnalytics(app);
 }
 
-export const db = getFirestore(app);
-export { analytics }; 
+const db = getFirestore(app);
+
+export { db, analytics }; 
