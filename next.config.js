@@ -21,7 +21,9 @@ const nextConfig = {
     return config;
   },
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: '2mb'
+    },
   },
   transpilePackages: ['firebase'],
   // Ensure Next.js doesn't try to bundle Firebase on the server

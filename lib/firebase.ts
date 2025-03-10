@@ -4,7 +4,7 @@
 
 'use client';
 
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -20,30 +20,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let firebaseApp;
-let db;
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const db = getFirestore(app);
 let analytics = null;
 
-// Only initialize Firebase if it hasn't been initialized and we're in the browser
-if (typeof window !== 'undefined') {
-  // Check if Firebase app already initialized
-  try {
-    const apps = require('firebase/app').getApps();
-    if (apps.length === 0) {
-      firebaseApp = initializeApp(firebaseConfig);
-    } else {
-      firebaseApp = apps[0];
-    }
-    
-    db = getFirestore(firebaseApp);
-    
-    // Only initialize analytics in the browser
-    if (firebaseConfig.measurementId) {
-      analytics = getAnalytics(firebaseApp);
-    }
-  } catch (error) {
-    console.error('Firebase initialization error:', error);
-  }
+// Only initialize analytics in the browser
+if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
+  analytics = getAnalytics(app);
 }
 
 export { db, analytics }; 
