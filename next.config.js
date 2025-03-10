@@ -18,16 +18,19 @@ const nextConfig = {
       };
     }
     
+    // Add rule for Firebase
+    config.module = {
+      ...config.module,
+      exprContextCritical: false,
+    };
+    
     return config;
   },
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb'
-    },
-  },
-  transpilePackages: ['firebase'],
-  // Ensure Next.js doesn't try to bundle Firebase on the server
-  serverComponentsExternalPackages: ['firebase']
+    }
+  }
 };
 
 module.exports = nextConfig; 

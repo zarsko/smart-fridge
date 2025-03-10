@@ -20,13 +20,29 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const db = getFirestore(app);
+let app;
+let db;
 let analytics = null;
 
-// Only initialize analytics in the browser
-if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
-  analytics = getAnalytics(app);
+try {
+  if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApps()[0];
+  }
+  
+  db = getFirestore(app);
+
+  // Only initialize analytics in the browser
+  if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
+    analytics = getAnalytics(app);
+  }
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+}
+
+if (!db) {
+  throw new Error('Firebase Firestore not initialized');
 }
 
 export { db, analytics }; 
